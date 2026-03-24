@@ -1,0 +1,53 @@
+#Lista 1 - Expressões Condicionais
+
+#1)
+SELECT nome, de_ferias, bairro FROM tabela_de_vendedores WHERE nome = 'Cláudia Morais' AND bairro ='Jardins';
+#a Cláudia está de férias.
+
+#2)
+SELECT nome FROM tabela_de_vendedores where PERCENTUAL_COMISSAO > 0.1 AND de_ferias = 1 ;
+#Roberta Martins
+
+#3)
+SELECT matricula, data_venda FROM notas_fiscais WHERE data_venda = date('2015-12-01') OR matricula = '00237';
+#Pois o CPF pode ser o mesmo para mais de uma compra e as notas não podem.alter
+
+#4)
+SELECT 
+    p.NOME_DO_PRODUTO, 
+    i.CODIGO_DO_PRODUTO, 
+    i.QUANTIDADE, 
+    i.PRECO
+FROM itens_notas_fiscais AS i
+INNER JOIN tabela_de_produtos AS p 
+    ON i.CODIGO_DO_PRODUTO = p.CODIGO_DO_PRODUTO
+WHERE i.QUANTIDADE >= 99
+order by i.preco desc
+limit 1;
+#OU também
+
+
+SELECT 
+    p.NOME_DO_PRODUTO, 
+    i.CODIGO_DO_PRODUTO, 
+    i.QUANTIDADE, 
+    i.PRECO
+FROM itens_notas_fiscais AS i
+INNER JOIN tabela_de_produtos AS p 
+    ON i.CODIGO_DO_PRODUTO = p.CODIGO_DO_PRODUTO
+WHERE i.preco = (SELECT MAX(PRECO) FROM itens_notas_fiscais);
+
+#Item 'Festival de Sabores - 2 Litros - Açai'
+
+#5)
+select * from itens_notas_fiscais where CODIGO_DO_PRODUTO = 1101035 and numero = 102;
+select * from notas_fiscais where numero = 102;
+select * from tabela_de_clientes where cpf = 8502682733;
+#Cliente: Valdeci da Silva
+select * from tabela_de_vendedores where matricula = 00236;
+#Vendedora: Cláudia Morais
+select * from tabela_de_produtos where CODIGO_DO_PRODUTO = 1101035;
+#Nome e Sabor: Linha Refrescante - 1 Litro - Morango/Limão
+
+
+
