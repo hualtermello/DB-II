@@ -24,13 +24,19 @@ select json_search(y, "ALL", "1234-5678") from x;
 
 select json_search(y, "ONE", "Alberto") from x;
 
+#Seleciona os paises que são repúblicas
+select doc -> "$.Name" as Nome, doc -> "$.government.GovernmentForm" as "Forma de Governo"
+from countryinfo
+where doc -> "$.government.GovernmentForm" like '%Republic%';
 
-/*JSONCONTAINS_PATH
-JSONCONTAINS
-JSONSEARCH*/
+select doc -> "$.demographics.LifeExpectancy" from countryinfo;
 
-/*Mostra se os paises tem nome, retornando '1' caso tenham.*/
-select json_contains_path (doc, "ONE", '$.Name') from countryinfo;
+select * from countryinfo;
 
+
+#Seleciona os paises da Oceania
+SELECT doc -> '$.Name' AS Pais
+FROM countryinfo
+WHERE doc -> '$.geography.Continent' like '%Oceania%';
 
 
