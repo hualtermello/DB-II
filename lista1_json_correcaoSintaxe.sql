@@ -35,7 +35,7 @@ cidade = -- {
         "territorio":{
 			"area":1652569,
 			"relevo": "Predominantemente Plano",
-            "altitude_maxima":840 --,
+            "altitude_maxima":840 -- ,
             "altitude_minima":570, #virgula a mais
 			-- }
 		}
@@ -84,7 +84,7 @@ as estruturas JSON quanto os comandos SQL podem estar erradas.*/
 
 SELECT 
 	JSON_EXTRACT("$.Primeiro_Nome", #Falta o nome da coluna depois do (
-    "$.Data_Nascimento", "$.Salario") 
+    "$.Data_Nascimento", "$.Salario") #Falta o JSON_EXTRACT() antes de cada chave
 WHERE tb_object_funcionario; #Trocar o WHERE por FROM
 
 -- b)
@@ -93,7 +93,7 @@ SELECT
 	JSON_UNQUOTE(JSON_EXTRACT(JSON,"$.Primeiro_Nome")) -- ,
     JSON_UNQUOTE(JSON_EXTRACT(JSON,"$.Data_Nascimento"), -- )
     JSON_EXTRACT(JSON,"$.Salario")
-FROM empresa;
+FROM empresa; #Trocar empresa por tb_object_funcionario
 
 -- c)
 
@@ -103,7 +103,7 @@ JSON_TABLE (
 	JSON_EXTRACT(JSON, "$.Dependentes"), "$[*]"
     COLUMNS (PARENTESCO VARCHAR(50) "$.Parentesco", #Falta o path depois do (50)
 			SEXO VARCHAR(50) PATH "$.Sexo")
-) AS T2;
+) AS T2; #Trocar T2 por T1
 
 -- d)
 
@@ -118,10 +118,10 @@ SELECT JSON_EXTRACT(doc, "$.GNP") as GNP
   , JSON_EXTRACT(doc, "$.IndepYear") as IndepYear
   , JSON_EXTRACT(doc, "$.geography.Region") as Region
   , JSON_EXTRACT(doc, "$.geography.Continent") as Continent
-  , JSON_EXTRACT(doc, "$.geography[0]") as SurfaceArea
+  , JSON_EXTRACT(doc, "$.geography[0]") as SurfaceArea #Tirar o [0] e colocar .SurfaceArea
   , JSON_EXTRACT(doc, "$.government.HeadOfState") as HeadOfState
   , JSON_EXTRACT(doc, "$.government.GovernmentForm") as GovernmentForm
-  , JSON_EXTRACT(doc, "$.demographics") as Population
+  , JSON_EXTRACT(doc, "$.demographics") as Population #Falta o .Population depois do demographics
     JSON_EXTRACT(doc, "$.demographics.LifeExpectancy") as LifeExpectancy #Falta a , entre Population e JSON_EXTRACT
   FROM countryinfo;
   
@@ -130,7 +130,8 @@ SELECT JSON_EXTRACT(doc, "$.GNP") as GNP
 SELECT JSON_EXTRACT("$.geography.Continent") as Continent, #Falta o nome da coluna e , depois do (
 (JSON_EXTRACT(doc, "$.demographics.Population")) as Population, #Tirar os () de fora
 AVG(JSON_EXTRACT(doc, "$.demographics.LifeExpectancy")) as LifeExpectancy 
-WHERE JSON_EXTRACT(doc, "$.government.") LIKE('%Monarchy%'), #o WHERE vem depois do FROM
+WHERE JSON_EXTRACT(doc, "$.government.") LIKE('%Monarchy%'), #Falta o GovernmentForm depois do government.
+#o WHERE vem depois do FROM
 FROM countryinfo
-GROUP BY JSON_EXTRACT(doc, "$.geography")
+GROUP BY JSON_EXTRACT(doc, "$.geography") -- .Continent
 ORDER BY 2;
